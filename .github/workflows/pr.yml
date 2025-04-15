@@ -1,0 +1,33 @@
+name: pr
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    env:
+        testResultsDirectory: TestResults
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 9.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.x'
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Test
+        run: dotnet test --configuration Release --logger trx --results-directory "$testResultsDirectory"
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: "$testResultsDirectory"
+        if: ${{ always() }}
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic

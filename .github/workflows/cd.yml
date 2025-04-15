@@ -1,0 +1,30 @@
+name: cd
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    env:
+      projectPath: src/CSharp.Book.Download.Program/CSharp.Book.Downloader.Program.csproj
+      configuration: Release
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 9.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.x'
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration $configuration /p:Version=${{github.event.release.name}} $projectPath
+      - name: PublishLinux
+        run: dotnet publish -r linux-x64 --configuration $configuration --no-build $projectPath --output ./linux
+      - name: PublishWindows
+        run: dotnet publish -r win-x64 --configuration $configuration --no-build $projectPath --output ./windows
+      
+      #TODO: Push to choco / linux repos

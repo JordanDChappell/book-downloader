@@ -11,4 +11,8 @@
     <AssemblyName>book-downloader</AssemblyName>
   </PropertyGroup>
 
+    <ItemGroup>
+    <ProjectReference Include="..\CSharp.Book.Downloader.Lib\Csharp.Book.Downloader.Lib.csproj" />
+  </ItemGroup>
+
 </Project>

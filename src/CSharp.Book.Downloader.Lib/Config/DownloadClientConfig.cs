@@ -1,9 +1,15 @@
+using CSharp.Book.Downloader.Lib.Models;
+
 namespace CSharp.Book.Downloader.Lib.Config;
 
 /// <summary>
 /// Configuration for the client / site that books will be used to locate books.
 /// </summary>
 public class DownloadClientConfig {
+    /// <summary>
+    /// The browser that should be used to access the client / site.
+    /// </summary>
+    public required BrowserType Browser { get; set; }
     /// <summary>
     /// The base URL of the client / site, before any parameters are applied.
     /// </summary>

@@ -13,6 +13,10 @@ public class DownloadClientConfig {
     /// </summary>
     public required DownloadClientSearchParameters SearchParameters { get; set; }
     /// <summary>
+    /// Selectors used to locate specific fields for books.
+    /// </summary>
+    public required DownloadClientSearchParameters Selectors { get; set; }
+    /// <summary>
     /// A flag that determines if the downloader will attempt to solve cloudflare verification processes.
     /// </summary>
     public bool HasCloudflareVerification { get; set; }
@@ -25,33 +29,33 @@ public class DownloadClientSearchParameters {
     /// <summary>
     /// The base query parameter name to search for a book.
     /// </summary>
-    public required string SearchParameterName { get; set; }
+    public required string Search { get; set; }
     /// <summary>
     /// Optional book format (filetype) parameter name.
     /// </summary>
-    public string? FormatParameterName { get; set; }
-    /// <summary>
-    /// Optional book type parameter name.
-    /// </summary>
-    public string? TypeParameterName { get; set; }
+    public string? Format { get; set; }
     /// <summary>
     /// Optional language parameter name.
     /// </summary>
-    public string? LanguageParameterName { get; set; }
+    public string? Language { get; set; }
+    /// <summary>
+    /// Optional book type parameter name.
+    /// </summary>
+    public string? Type { get; set; }
 }
 
 public class DownloadClientSelectors {
     /// <summary>
     /// A selector used to locate individual books in a collection / list.
     /// </summary>
-    public required string BookSelector { get; set; }
-    public required string DownloadLinkSelector { get; set; }
-    public required string TitleSelector { get; set; }
-    public string? AuthorSelector { get; set; }
-    public string? LanguageSelector { get; set; }
-    public string? PublisherSelector { get; set; }
-    public string? SizeSelector { get; set; }
-    public string? YearSelector { get; set; }
-    public string? BookTitleRegexPattern { get; set; }
-    public string? DownloadLinkRegexPattern { get; set; }
+    public required string Book { get; set; }
+    public required string Url { get; set; }
+    public required string Title { get; set; }
+    public string? Author { get; set; }
+    public string? Language { get; set; }
+    public string? Publisher { get; set; }
+    public string? Size { get; set; }
+    public string? Year { get; set; }
+    public string? TitleRegexPattern { get; set; }
+    public string? UrlRegexPattern { get; set; }
 }

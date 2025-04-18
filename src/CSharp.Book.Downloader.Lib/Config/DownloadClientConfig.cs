@@ -1,7 +1,7 @@
 namespace CSharp.Book.Downloader.Lib.Config;
 
 /// <summary>
-/// Configuration for the client / site that books will be located within.
+/// Configuration for the client / site that books will be used to locate books.
 /// </summary>
 public class DownloadClientConfig {
     /// <summary>

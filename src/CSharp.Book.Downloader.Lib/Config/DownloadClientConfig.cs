@@ -50,24 +50,48 @@ public class DownloadClientSearchParameters {
     public string? Type { get; set; }
 }
 
+/// <summary>
+/// Selectors for the chosen download client / site.
+/// </summary>
 public class DownloadClientSelectors {
     /// <summary>
     /// A selector used to locate individual books in a collection / list.
+    /// <para>Note: this selector is required.</para>
     /// </summary>
-    public required DownloadClientSelector Book { get; set; }
-    public required DownloadClientSelector Title { get; set; }
-    public required DownloadClientSelector Url { get; set; }
-    public DownloadClientSelector? Author { get; set; }
-    public DownloadClientSelector? Format { get; set; }
-    public DownloadClientSelector? Language { get; set; }
-    public DownloadClientSelector? Size { get; set; }
-    public DownloadClientSelector? Year { get; set; }
-}
-
-public class DownloadClientSelector {
-    public required string Value { get; set; }
-    public string? Type { get; set; }
-    public string? Attribute { get; set; }
-    public string? Regex { get; set; }
-    public string? Template { get; set; }
+    public required StringSelector Book { get; set; }
+    /// <summary>
+    /// A selector used to find the book's title, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public required StringSelector Title { get; set; }
+    /// <summary>
+    /// A selector used to find the book's url, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public required StringSelector Url { get; set; }
+    /// <summary>
+    /// A selector used to find the book's author, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public StringSelector? Author { get; set; }
+    /// <summary>
+    /// A selector used to find the book's format / file type, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public StringSelector? Format { get; set; }
+    /// <summary>
+    /// A selector used to find the book's lamguage, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public StringSelector? Language { get; set; }
+    /// <summary>
+    /// A selector used to find the book's size, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public StringSelector? Size { get; set; }
+    /// <summary>
+    /// A selector used to find the book's year, called on the element found by the `Book` selector.
+    /// <para>Note: this selector is required.</para>
+    /// </summary>
+    public StringSelector? Year { get; set; }
 }

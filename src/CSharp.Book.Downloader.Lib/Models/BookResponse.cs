@@ -6,7 +6,8 @@ public class BookResponse {
     public string? Author { get; set; }
     public BookFormat? Format { get; set; }
     public string? Language { get; set; }
-    public string? Publisher { get; set; }
     public string? Size { get; set; }
     public string? Year { get; set; }
+
+    public override string ToString() => $"{Title} - {Author} - {Url}";
 }

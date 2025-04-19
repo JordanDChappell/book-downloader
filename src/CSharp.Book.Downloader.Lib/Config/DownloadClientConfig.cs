@@ -21,7 +21,7 @@ public class DownloadClientConfig {
     /// <summary>
     /// Selectors used to locate specific fields for books.
     /// </summary>
-    public required DownloadClientSearchParameters Selectors { get; set; }
+    public required DownloadClientSelectors Selectors { get; set; }
     /// <summary>
     /// A flag that determines if the downloader will attempt to solve cloudflare verification processes.
     /// </summary>
@@ -54,14 +54,20 @@ public class DownloadClientSelectors {
     /// <summary>
     /// A selector used to locate individual books in a collection / list.
     /// </summary>
-    public required string Book { get; set; }
-    public required string Url { get; set; }
-    public required string Title { get; set; }
-    public string? Author { get; set; }
-    public string? Language { get; set; }
-    public string? Publisher { get; set; }
-    public string? Size { get; set; }
-    public string? Year { get; set; }
-    public string? TitleRegexPattern { get; set; }
-    public string? UrlRegexPattern { get; set; }
+    public required DownloadClientSelector Book { get; set; }
+    public required DownloadClientSelector Title { get; set; }
+    public required DownloadClientSelector Url { get; set; }
+    public DownloadClientSelector? Author { get; set; }
+    public DownloadClientSelector? Format { get; set; }
+    public DownloadClientSelector? Language { get; set; }
+    public DownloadClientSelector? Size { get; set; }
+    public DownloadClientSelector? Year { get; set; }
+}
+
+public class DownloadClientSelector {
+    public required string Value { get; set; }
+    public string? Type { get; set; }
+    public string? Attribute { get; set; }
+    public string? Regex { get; set; }
+    public string? Template { get; set; }
 }

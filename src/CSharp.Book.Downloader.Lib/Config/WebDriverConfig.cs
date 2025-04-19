@@ -12,21 +12,21 @@ using WebDriverManager.Helpers;
 namespace CSharp.Book.Downloader.Lib.Config;
 
 public static class WebDriverConfig {
-    public static IWebDriver GetDriver(BrowserType browser) {
+    public static IWebDriver GetDriver(BrowserType browser, bool headless = true) {
         DriverManager driverManager = new();
 
         switch (browser) {
             case BrowserType.Chrome: {
                 driverManager.SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
-                return GetChromeDriver();
+                return GetChromeDriver(headless);
             }
             case BrowserType.Edge: {
                 driverManager.SetUpDriver(new EdgeConfig(), VersionResolveStrategy.MatchingBrowser);
-                return GetEdgeDriver();
+                return GetEdgeDriver(headless);
             }
             case BrowserType.Firefox: {
                 driverManager.SetUpDriver(new FirefoxConfig(), VersionResolveStrategy.MatchingBrowser);
-                return GetFirefoxDriver();
+                return GetFirefoxDriver(headless);
             }
             default: {
                 throw new NotSupportedException("The provided browser type is not supported");
@@ -34,27 +34,24 @@ public static class WebDriverConfig {
         }
     }
 
-    private static ChromeDriver GetChromeDriver() {
+    private static ChromeDriver GetChromeDriver(bool headless) {
         ChromeOptions options = new();
-#if DEBUG
-        options.AddArguments("headless", "disable-gpu");
-#endif
+        if (headless)
+            options.AddArguments("headless", "disable-gpu");
         return new ChromeDriver(options);
     }
 
-    private static EdgeDriver GetEdgeDriver() {
+    private static EdgeDriver GetEdgeDriver(bool headless) {
         EdgeOptions options = new();
-#if DEBUG
-        options.AddArguments("headless", "disable-gpu");
-#endif
+        if (headless)
+            options.AddArguments("headless", "disable-gpu");
         return new EdgeDriver(options);
     }
 
-    private static FirefoxDriver GetFirefoxDriver() {
+    private static FirefoxDriver GetFirefoxDriver(bool headless) {
         FirefoxOptions options = new();
-#if DEBUG
-        options.AddArguments("headless");
-#endif
+        if (headless)
+            options.AddArguments("headless");
         return new FirefoxDriver(options);
     }
 }

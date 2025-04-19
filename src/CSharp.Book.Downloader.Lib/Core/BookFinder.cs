@@ -14,8 +14,11 @@ public class BookFinder : IBookFinder {
     private readonly DownloadClientConfig _config;
     private readonly IWebDriver _driver;
 
-    public BookFinder(DownloadClientConfig config, IWebDriver driver) {
-        _config = config;
+    public BookFinder(IConfigLoader configLoader, IWebDriver driver) {
+        if (configLoader.Config is null)
+            throw new NullReferenceException("A valid configuration has not been loaded, unable to locate books");
+
+        _config = configLoader.Config;
         _driver = driver;
     }
 

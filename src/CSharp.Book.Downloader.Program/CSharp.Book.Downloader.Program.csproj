@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSharp.Book.Downloader.Lib\Csharp.Book.Downloader.Lib.csproj" />
+    <ProjectReference Include="..\CSharp.Book.Downloader.Lib\CSharp.Book.Downloader.Lib.csproj" />
   </ItemGroup>
 
 </Project>

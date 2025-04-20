@@ -23,9 +23,18 @@ public class DownloadClientConfig {
     /// </summary>
     public required DownloadClientSelectors Selectors { get; set; }
     /// <summary>
+    /// The globally configured download directory.
+    /// </summary>
+    public string? DownloadDirectory { get; set; }
+    /// <summary>
     /// A flag that determines if the downloader will attempt to solve cloudflare verification processes.
     /// </summary>
     public bool HasCloudflareVerification { get; set; }
+    /// <summary>
+    /// A flag that determines if the downloader needs to interact with a page or if it can download using the extracted
+    /// url directly.
+    /// </summary>
+    public bool CanDownloadDirectly { get; set; }
 }
 
 /// <summary>
@@ -70,28 +79,27 @@ public class DownloadClientSelectors {
     /// </summary>
     public required StringSelector Url { get; set; }
     /// <summary>
+    /// A selector used to download the book, if `CanDownloadDirectly` is not set.
+    /// </summary>
+    public StringSelector? Download { get; set; }
+    /// <summary>
     /// A selector used to find the book's author, called on the element found by the `Book` selector.
-    /// <para>Note: this selector is required.</para>
     /// </summary>
     public StringSelector? Author { get; set; }
     /// <summary>
     /// A selector used to find the book's format / file type, called on the element found by the `Book` selector.
-    /// <para>Note: this selector is required.</para>
     /// </summary>
     public StringSelector? Format { get; set; }
     /// <summary>
     /// A selector used to find the book's lamguage, called on the element found by the `Book` selector.
-    /// <para>Note: this selector is required.</para>
     /// </summary>
     public StringSelector? Language { get; set; }
     /// <summary>
     /// A selector used to find the book's size, called on the element found by the `Book` selector.
-    /// <para>Note: this selector is required.</para>
     /// </summary>
     public StringSelector? Size { get; set; }
     /// <summary>
     /// A selector used to find the book's year, called on the element found by the `Book` selector.
-    /// <para>Note: this selector is required.</para>
     /// </summary>
     public StringSelector? Year { get; set; }
 }

@@ -23,6 +23,12 @@ public static class DriverUtility {
     public static IEnumerable<IWebElement> FindElements(this IWebDriver driver, IWebElement element, By by, int waitTimeSeconds = 20) =>
         driver.WaitUntil(_ => element.FindElements(by), waitTimeSeconds);
 
+    public static bool PageContains(this IWebDriver driver, string contains, int waitTimeSeconds = 20) =>
+        driver.WaitUntil(driver => driver.PageSource.Contains(contains), waitTimeSeconds);
+
+    public static bool PageDoesNotContain(this IWebDriver driver, string contains, int waitTimeSeconds = 20) =>
+        driver.WaitUntil(driver => !driver.PageSource.Contains(contains), waitTimeSeconds);
+
     public static string FindElementString(this IWebDriver driver, StringSelector? selector, int waitTimeSeconds = 20) {
         if (selector is null)
             return "";
@@ -65,6 +71,7 @@ public static class DriverUtility {
         int waitTimeSeconds
     ) {
         WebDriverWait wait = new(driver, TimeSpan.FromSeconds(waitTimeSeconds));
+        wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
         return wait.Until(action);
     }
 }

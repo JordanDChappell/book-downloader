@@ -4,6 +4,7 @@ using CSharp.Book.Downloader.Lib.Models;
 using CSharp.Book.Downloader.Lib.Utils;
 
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace CSharp.Book.Downloader.Lib.Core;
 
@@ -21,32 +22,54 @@ public class BookDownloader : IBookDownloader {
         _client = new HttpClient();
     }
 
-    public async Task<FileInfo> DownloadBookAsync(BookResponse book, string? path) {
-        if (path is null && _config.DownloadDirectory is null)
-            throw new ArgumentException(
+    public async Task<FileInfo> DownloadBookAsync(BookResponse book, string? directory = null) {
+        string downloadDirectory = (directory ?? _config.DownloadDirectory)
+            ?? throw new ArgumentException(
                 "Unable to download book as global directory is not set and no override has been provided"
             );
 
-        if (!_config.CanDownloadDirectly)
-            return await DownloadFileAsync(book.Url, path);
+        Directory.CreateDirectory(downloadDirectory);
+
+        if (_config.CanDownloadDirectly)
+            return await DownloadFileAsync(book.Url, downloadDirectory);
 
         _driver.SwitchTo().NewWindow(WindowType.Tab);
         await _driver.Navigate().GoToUrlAsync(book.Url);
 
-        if (_config.HasCloudflareVerification) {
-            IWebElement iframe = _driver.FindElement(By.CssSelector("iframe[title*='Cloudflare']"), 20);
-            _driver.SwitchTo().Frame(iframe);
-            _driver.FindElement(By.CssSelector("input"), 20).Click();
-            _driver.SwitchTo().Window(_driver.WindowHandles.Last());
-        }
+        if (_config.HasCloudflareVerification)
+            HandleCloudflareVerification();
 
         string downloadUrl = _driver.FindElementString(_config.Selectors.Download);
-        return await DownloadFileAsync(downloadUrl, path);
+        return await DownloadFileAsync(downloadUrl, downloadDirectory);
     }
 
-    private async Task<FileInfo> DownloadFileAsync(string url, string? path) {
+    private void HandleCloudflareVerification() {
+        if (!_driver.FindElements(By.CssSelector(".zone-name-title"), 20).Any())
+            return; // can't locate first marker element for cloudflare verification
+
+        IWebElement titleElement = _driver.FindElement(By.CssSelector(".zone-name-title"));
+
+        _driver.PageContains("Verify you are human");
+
+        Actions action = new(_driver);
+        action
+            .MoveToElement(titleElement)
+            .Pause(TimeSpan.FromSeconds(1))
+            .Click()
+            .Pause(TimeSpan.FromSeconds(1))
+            .SendKeys(Keys.Tab)
+            .Pause(TimeSpan.FromSeconds(1))
+            .SendKeys(Keys.Tab)
+            .Pause(TimeSpan.FromSeconds(1))
+            .SendKeys(Keys.Space)
+            .Perform();
+
+        _driver.SwitchTo().DefaultContent();
+    }
+
+    private async Task<FileInfo> DownloadFileAsync(string url, string directory) {
         string fileName = Path.GetFileName(url);
-        string downloadPath = path ?? Path.Combine(_config.DownloadDirectory ?? "", fileName);
+        string downloadPath = Path.Combine(directory, fileName);
         using HttpResponseMessage response = await _client.GetAsync(url);
         using Stream contentStream = await response.Content.ReadAsStreamAsync();
         using (FileStream fileStream = File.OpenWrite(downloadPath)) {

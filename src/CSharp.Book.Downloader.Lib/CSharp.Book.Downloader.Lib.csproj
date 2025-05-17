@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" />
+    <PackageReference Include="Selenium.WebDriver.UndetectedChromeDriver" />
+    <PackageReference Include="WebDriverManager" />
+  </ItemGroup>
+
 </Project>
